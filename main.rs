@@ -44,3 +44,21 @@ fn main() {
     println!("The greatest common divisor of {:?} is {}",
              numbers, d);
 }
+
+use actix_web::{web, App, HttpResponse, HttpServer};
+
+#[actix_web::main]
+async fn main() {
+    let server = HttpServer::new(|| {
+        App::new()
+            .route("/", web::get().to(get_index))
+            .route("/gcd", web::post().to(post_gcd))
+    });
+
+    println!("Serving on http://localhost:3000...");
+    server
+        .bind("127.0.0.1:3000").expect("error binding server to address")
+        .run()
+        .await
+        .expect("error running server");
+}
