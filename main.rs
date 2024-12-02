@@ -45,6 +45,18 @@ fn main() {
              numbers, d);
 }
 
+fn grep<R>(target: &str, reader: R) -> io::Result<()>
+    where R: BufRead
+{
+    for line_result in reader.lines() {
+        let line = line_result?;
+        if line.contains(target) {
+            println!("{}", line);
+        }
+    }
+    Ok(())
+}
+
 async fn post_gcd(form: web::Form<GcdParameters>) -> HttpResponse {
     if form.n == 0 || form.m == 0 {
         return HttpResponse::BadRequest()
