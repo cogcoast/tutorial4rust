@@ -57,6 +57,13 @@ fn grep<R>(target: &str, reader: R) -> io::Result<()>
     Ok(())
 }
 
+struct Request {
+    method: String,
+    url: String,
+    headers: HashMap<String, String>,
+    body: Vec<u8>
+}
+
 async fn post_gcd(form: web::Form<GcdParameters>) -> HttpResponse {
     if form.n == 0 || form.m == 0 {
         return HttpResponse::BadRequest()
