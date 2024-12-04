@@ -64,6 +64,18 @@ struct Request {
     body: Vec<u8>
 }
 
+struct Response {
+    code: u32,
+    headers: HashMap<String, String>,
+    body: Vec<u8>
+}
+
+type BoxedCallback = Box<dyn Fn(&Request) -> Response>;
+
+struct BasicRouter {
+    routes: HashMap<String, BoxedCallback>
+}
+
 async fn post_gcd(form: web::Form<GcdParameters>) -> HttpResponse {
     if form.n == 0 || form.m == 0 {
         return HttpResponse::BadRequest()
