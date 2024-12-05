@@ -76,6 +76,20 @@ struct BasicRouter {
     routes: HashMap<String, BoxedCallback>
 }
 
+impl BasicRouter {
+    // Create an empty router.
+    fn new() -> BasicRouter {
+        BasicRouter { routes: HashMap::new() }
+    }
+
+    // Add a route to the router.
+    fn add_route<C>(&mut self, url: &str, callback: C)
+        where C: Fn(&Request) -> Response + 'static
+    {
+        self.routes.insert(url.to_string(), Box::new(callback));
+    }
+}
+
 async fn post_gcd(form: web::Form<GcdParameters>) -> HttpResponse {
     if form.n == 0 || form.m == 0 {
         return HttpResponse::BadRequest()
