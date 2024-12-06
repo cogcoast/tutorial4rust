@@ -90,6 +90,11 @@ impl BasicRouter {
     }
 }
 
+enum BinaryTree<T> {
+    Empty,
+    NonEmpty(Box<TreeNode<T>>),
+}
+
 async fn post_gcd(form: web::Form<GcdParameters>) -> HttpResponse {
     if form.n == 0 || form.m == 0 {
         return HttpResponse::BadRequest()
