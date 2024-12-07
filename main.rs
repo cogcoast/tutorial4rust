@@ -95,6 +95,22 @@ enum BinaryTree<T> {
     NonEmpty(Box<TreeNode<T>>),
 }
 
+struct TreeNode<T> {
+    element: T,
+    left: BinaryTree<T>,
+    right: BinaryTree<T>,
+}
+
+#[test]
+fn binary_tree_size() {
+    use std::mem::size_of;
+
+    let word = size_of::<usize>();
+    assert_eq!(size_of::<BinaryTree<String>>(), word);
+    type Triple = (&'static str, BinaryTree<&'static str>, BinaryTree<&'static str>);
+    assert_eq!(size_of::<Triple>(), 4 * word);
+}
+
 async fn post_gcd(form: web::Form<GcdParameters>) -> HttpResponse {
     if form.n == 0 || form.m == 0 {
         return HttpResponse::BadRequest()
