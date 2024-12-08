@@ -101,6 +101,17 @@ struct TreeNode<T> {
     right: BinaryTree<T>,
 }
 
+struct TreeIter<'a, T> {
+    // A stack of references to tree nodes. Since we use `Vec`'s
+    // `push` and `pop` methods, the top of the stack is the end of the
+    // vector.
+    //
+    // The node the iterator will visit next is at the top of the stack,
+    // with those ancestors still unvisited below it. If the stack is empty,
+    // the iteration is over.
+    unvisited: Vec<&'a TreeNode<T>>
+}
+
 #[test]
 fn binary_tree_size() {
     use std::mem::size_of;
