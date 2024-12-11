@@ -106,6 +106,19 @@ pub fn block_on<F: Future>(future: F) -> F::Output {
     }
 }
 
+macro_rules! define_complex {
+    () => {
+        #[derive(Clone, Copy, Debug)]
+        struct Complex<T> {
+            /// Real portion of the complex number
+            re: T,
+
+            /// Imaginary portion of the complex number
+            im: T,
+        }
+    };
+}
+
 mod non_generic_add {
     define_complex!();
 
