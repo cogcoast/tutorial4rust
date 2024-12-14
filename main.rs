@@ -138,6 +138,22 @@ mod very_generic {
     }
 }
 
+mod impl_compound {
+    define_complex!();
+
+    use std::ops::AddAssign;
+
+    impl<T> AddAssign for Complex<T>
+    where
+        T: AddAssign<T>,
+    {
+        fn add_assign(&mut self, rhs: Complex<T>) {
+            self.re += rhs.re;
+            self.im += rhs.im;
+        }
+    }
+}
+
 mod non_generic_add {
     define_complex!();
 
