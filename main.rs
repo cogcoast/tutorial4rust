@@ -154,6 +154,14 @@ mod impl_compound {
     }
 }
 
+mod derive_partialeq {
+    #[derive(Clone, Copy, Debug, PartialEq)]
+    struct Complex<T> {
+        re: T,
+        im: T,
+    }
+}
+
 mod non_generic_add {
     define_complex!();
 
