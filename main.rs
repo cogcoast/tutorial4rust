@@ -173,6 +173,31 @@ mod derive_everything {
     }
 }
 
+fn complex() {
+    #[derive(Copy, Clone, Debug)]
+    struct Complex { re: f64, im: f64 }
+
+    let third = Complex { re: -0.5, im: f64::sqrt(0.75) };
+    println!("{:?}", third);
+
+    use std::fmt;
+
+    impl fmt::Display for Complex {
+        fn fmt(&self, dest: &mut fmt::Formatter) -> fmt::Result {
+            let im_sign = if self.im < 0.0 { '-' } else { '+' };
+            write!(dest, "{} {} {}i", self.re, im_sign, f64::abs(self.im))
+        }
+    }
+
+    let one_twenty = Complex { re: -0.5, im: 0.866 };
+    assert_eq!(format!("{}", one_twenty),
+               "-0.5 + 0.866i");
+
+    let two_forty = Complex { re: -0.5, im: -0.866 };
+    assert_eq!(format!("{}", two_forty),
+               "-0.5 - 0.866i");
+}
+
 mod non_generic_add {
     define_complex!();
 
