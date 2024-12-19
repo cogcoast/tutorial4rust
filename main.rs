@@ -187,6 +187,12 @@ fn copy_dir_to(src: &Path, dst: &Path) -> io::Result<()> {
     Ok(())
 }
 
+fn symlink<P: AsRef<Path>, Q: AsRef<Path>>(src: P, _dst: Q) -> std::io::Result<()> {
+    Err(io::Error::new(io::ErrorKind::Other,
+                       format!("can't copy symbolic link: {}",
+                               src.as_ref().display())))
+}
+
 fn complex() {
     #[derive(Copy, Clone, Debug)]
     struct Complex { re: f64, im: f64 }
