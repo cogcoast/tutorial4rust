@@ -193,6 +193,22 @@ fn symlink<P: AsRef<Path>, Q: AsRef<Path>>(src: P, _dst: Q) -> std::io::Result<(
                                src.as_ref().display())))
 }
 
+fn copy_to(src: &Path, src_type: &fs::FileType, dst: &Path) -> io::Result<()> {
+    if src_type.is_file() {
+        fs::copy(src, dst)?;
+    } else if src_type.is_dir() {
+        copy_dir_to(src, dst)?;
+    } else if src_type.is_symlink() {
+        let target = src.read_link()?;
+        symlink(target, dst)?;
+    } else {
+        return Err(io::Error::new(io::ErrorKind::Other,
+                                  format!("don't know how to copy: {}",
+                                          src.display())));
+    }
+    Ok(())
+}
+
 fn complex() {
     #[derive(Copy, Clone, Debug)]
     struct Complex { re: f64, im: f64 }
