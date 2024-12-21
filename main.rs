@@ -209,6 +209,27 @@ fn copy_to(src: &Path, src_type: &fs::FileType, dst: &Path) -> io::Result<()> {
     Ok(())
 }
 
+fn copy_into<P, Q>(source: P, destination: Q) -> io::Result<()>
+    where P: AsRef<Path>,
+          Q: AsRef<Path>
+{
+    let src = source.as_ref();
+    let dst = destination.as_ref();
+
+    match src.file_name() {
+        None => {
+            return Err(io::Error::new(io::ErrorKind::Other,
+                                      format!("can't copy nameless directory: {}",
+                                              src.display())));
+        }
+        Some(src_name) => {
+            let md = src.metadata()?;
+            copy_to(src, &md.file_type(), &dst.join(src_name))?;
+        }
+    }
+    Ok(())
+}
+
 fn complex() {
     #[derive(Copy, Clone, Debug)]
     struct Complex { re: f64, im: f64 }
