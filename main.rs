@@ -245,6 +245,26 @@ fn dwim_copy<P, Q>(source: P, destination: Q) -> io::Result<()>
     }
 }
 
+fn copy_main() -> io::Result<()> {
+    let args = std::env::args_os().collect::<Vec<_>>();
+    if args.len() < 3 {
+        println!("usage: copy FILE... DESTINATION");
+    } else if args.len() == 3 {
+        dwim_copy(&args[1], &args[2])?;
+    } else {
+        let dst = Path::new(&args[args.len() - 1]);
+        if !dst.is_dir() {
+            return Err(io::Error::new(io::ErrorKind::Other,
+                                      format!("target '{}' is not a directory",
+                                              dst.display())));
+        }
+        for i in 1 .. args.len() - 1 {
+            copy_into(&args[i], dst)?;
+        }
+    }
+    Ok(())
+}
+
 fn complex() {
     #[derive(Copy, Clone, Debug)]
     struct Complex { re: f64, im: f64 }
