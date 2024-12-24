@@ -245,6 +245,10 @@ fn dwim_copy<P, Q>(source: P, destination: Q) -> io::Result<()>
     }
 }
 
+pub fn connect() -> Session {
+    Session
+}
+
 fn copy_main() -> io::Result<()> {
     let args = std::env::args_os().collect::<Vec<_>>();
     if args.len() < 3 {
