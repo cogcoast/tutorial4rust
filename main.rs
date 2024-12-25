@@ -249,6 +249,16 @@ pub fn connect() -> Session {
     Session
 }
 
+pub fn load(filename: &str) -> Terrarium {
+    // This implementation is, like everything else in here, completely bogus
+    File::open(filename).unwrap();  // check that the file is there
+    Terrarium {
+        ferns: vec![
+            Fern::new(FernType::Fiddlehead)
+        ]
+    }
+}
+
 fn copy_main() -> io::Result<()> {
     let args = std::env::args_os().collect::<Vec<_>>();
     if args.len() < 3 {
