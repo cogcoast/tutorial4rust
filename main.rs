@@ -259,6 +259,10 @@ pub fn load(filename: &str) -> Terrarium {
     }
 }
 
+pub fn produce_spore(factory: &mut Sporangium) -> Spore {
+    Spore { size: 1.0 }
+}
+
 fn copy_main() -> io::Result<()> {
     let args = std::env::args_os().collect::<Vec<_>>();
     if args.len() < 3 {
